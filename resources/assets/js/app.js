@@ -70,41 +70,26 @@ Chart.pluginService.register({
     },
 });
 
-let dailyData = [];
-let weeklyData = [];
-let monthlyData = [];
-let yearlyData = [];
-
 axios.get('/api/timeline/daily').then((data) => {
     initTypeChart(data.data, 'daily', 'day');
+    initVolumeChart(data.data, 'daily', 'day');
 });
 
 axios.get('/api/timeline/weekly').then((data) => {
     initTypeChart(data.data, 'weekly', 'week');
+    initVolumeChart(data.data, 'weekly', 'week');
 });
 
 axios.get('/api/timeline/monthly').then((data) => {
     initTypeChart(data.data, 'monthly', 'month');
+    initVolumeChart(data.data, 'monthly', 'month');
 });
 
 axios.get('/api/timeline/yearly').then((data) => {
     initTypeChart(data.data, 'yearly', 'year');
+    initVolumeChart(data.data, 'yearly', 'year');
 });
 
-
-/*axios.all([
-    axios.get('/api/timeline/daily'),
-    axios.get('/api/timeline/weekly'),
-    axios.get('/api/timeline/monthly'),
-    axios.get('/api/timeline/yearly')
-]).then(axios.spread((daily, weekly, monthly, yearly) => {
-    dailyData = daily.data;
-    weeklyData = weekly.data;
-    monthlyData = monthly.data;
-    yearlyData = yearly.data;
-
-    initCharts();
-}));*/
 
 function initCharts()
 {
@@ -139,7 +124,7 @@ function initTypeChart(data, type, typeField)
             label: OPTYPES[i],
             data: []
         };
-    };
+    }
     data.forEach((item) => {
         labels.push(item[typeField]);
         for(let i = 0; i < 10; i++) {
@@ -151,13 +136,56 @@ function initTypeChart(data, type, typeField)
         datasets.n_operations.borderWidth = 1;
         datasets.n_operations.backgroundColor = 'rgba(255,255,255,0)';
     });
-    
+
     let datasets2 = Object.keys(datasets).map((k) => datasets[k]);
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: datasets2
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function initVolumeChart(data, type, typeField)
+{
+    const ctx = document.getElementById("volume_" + type);
+    const labels = [];
+
+    datasets = [];
+    datasets.push({
+        label: 'PASC',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+//    datasets.push({
+//        label: 'Molina',
+//        data: [],
+//        borderWidth: 1,
+//        backgroundColor: 'rgba(255,255,255,0)'
+//    });
+
+    data.forEach((item) => {
+        labels.push(item[typeField]);
+        //datasets[0].data.push(item.sum_volume_molina);
+        datasets[0].data.push(item.sum_volume_pasc);
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
         },
         options: {
             scales: {
