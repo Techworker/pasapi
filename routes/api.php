@@ -35,5 +35,3 @@ Route::get('/stats/highest/volume', 'ApiController@statsHighestVolume')->name('a
 Route::get('/stats/highest/volume/top10', 'ApiController@statsHighestVolumeTop10')->name('api_stats_highest_volume_top10');
 Route::get('/stats/highest/fee', 'ApiController@statsHighestFee')->name('api_stats_highest_fee');
 Route::get('/stats/highest/fee/top10', 'ApiController@statsHighestFeeTop10')->name('api_stats_highest_fee_top10');
-Route::get('/stats/highest/reward', 'ApiController@statsHighestReward')->name('api_stats_highest_reward');
-Route::get('/stats/highest/reward/top10', 'ApiController@statsHighestRewardTop10')->name('api_stats_highest_reward_top10');

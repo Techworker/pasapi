@@ -117,28 +117,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Gets the stats of all blocks.
-     *
-     * @return
-     */
-    public function statsHighestReward()
-    {
-        $block = Block::orderBy('reward', 'DESC')->first();
-        return new BlockResource($block);
-    }
-
-    /**
-     * Gets the stats of all blocks.
-     *
-     * @return
-     */
-    public function statsHighestRewardTop10()
-    {
-        $blocks = Block::orderBy('reward', 'DESC')->take(10)->get();
-        return new BlockCollection($blocks);
-    }
-
-    /**
      * A small helper function to retrieve statistics.
      *
      * @param array $where

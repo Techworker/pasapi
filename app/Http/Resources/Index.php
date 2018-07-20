@@ -44,12 +44,6 @@ class Index extends JsonResource
                 'stats_highest_fee_top10' => [
                     'href' => route('api_stats_highest_fee_top10')
                 ],
-                'stats_highest_reward' => [
-                    'href' => route('api_stats_highest_reward')
-                ],
-                'stats_highest_reward_top10' => [
-                    'href' => route('api_stats_highest_reward_top10')
-                ],
                 'foundation' => [
                     'href' => route('api_foundation')
                 ],
