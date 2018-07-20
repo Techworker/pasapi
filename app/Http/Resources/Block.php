@@ -46,6 +46,7 @@ class Block extends JsonResource
             'n_uniq_accounts' => $block->n_uniq_accounts,
             'n_operations_single' => $block->n_operations_single,
             'n_operations_multi' => $block->n_operations_multi,
+            'hashrate' => (string)$block->hashrate,
             'volume' => (string)$block->volume,
             'volume_pasc' => PascalCurrency::fromMolinas($block->volume)->getPascal(),
             'duration' => $block->duration

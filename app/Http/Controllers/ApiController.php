@@ -92,6 +92,7 @@ class ApiController extends Controller
             $raw[] = 'SUM(' . $field . ') AS sum_' . $alias;
             $raw[] = 'AVG(' . $field . ') AS avg_' . $alias;
         }
+        $raw[] = 'AVG(hashrate) AS avg_hashrate';
 
         $query = \DB::table('blocks')
             ->selectRaw(implode(', ', $raw));
@@ -112,6 +113,8 @@ class ApiController extends Controller
             $stats['avg_' . $field] = round($stats['avg_' . $field], 2);
         }
 
+        $stats['avg_hashrate'] = (string)round($stats['avg_hashrate']);
+
         $stats['sum_volume_molina'] = $stats['sum_volume'];
         $stats['sum_volume_pasc'] = PascalCurrency::fromMolinas($stats['sum_volume'])->getPascal();
         $stats['avg_volume_molina'] = (string)round($stats['avg_volume'], 0);
@@ -122,6 +125,11 @@ class ApiController extends Controller
         return $stats;
     }
 
+    /**
+     * Gets data of the foundation accounts.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function foundation() {
 
         $latestBlock = Block::orderBy('block', 'DESC')->first();

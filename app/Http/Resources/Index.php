@@ -22,8 +22,15 @@ class Index extends JsonResource
                 'blocks_latest' => [
                     'href' => route('api_blocks_latest')
                 ],
+                'blocks_detail' => [
+                    'href' => \URL::to('/') . '/api/blocks/{blockNumber}',
+                    'templated' => true
+                ],
+                'stats' => [
+                    'href' => route('api_stats')
+                ],
                 'stats_24' => [
-                    'href' => route('api_blocks_latest')
+                    'href' => route('api_stats_24')
                 ]
             ]
         ];

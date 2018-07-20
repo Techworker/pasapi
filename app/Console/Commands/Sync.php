@@ -9,14 +9,14 @@ use Illuminate\Console\Command;
 use Techworker\PascalCoin\PascalCoinRpcClient;
 use Techworker\PascalCoin\Type\Simple\BlockNumber;
 
-class Init extends Command
+class Sync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'pascex:init';
+    protected $signature = 'pascex:sync';
 
     /**
      * The console command description.

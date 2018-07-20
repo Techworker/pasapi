@@ -41,8 +41,8 @@ class Fix extends Command
     public function handle(PascalCoinRpcClient $rpc)
     {
         $ct = 0;
-        $size = 100;
-        Block::chunk($size, function ($blocks) use($rpc, &$ct, $size)
+        $size = 1;
+        Block::orderBy('block', 'ASC')->where('hashrate', '=', 0)->where('block', '>', 0)->chunk($size, function ($blocks) use($rpc, &$ct, $size)
         {
             $blockNumbers = $blocks->pluck('block');
             $start = $blockNumbers[0];
