@@ -124,7 +124,7 @@ class ApiController extends Controller
      */
     protected function getRawStats(array $where = [], $groupBy = [], $multi = false, $order = [])
     {
-        $fields = ['volume', 'n_operations_single' => 'n_operations'];
+        $fields = ['volume', 'fee', 'n_operations_single' => 'n_operations'];
         for($i = 0; $i <= 9; $i++) {
             $fields[] = 'n_type_' . $i;
         }
@@ -178,6 +178,13 @@ class ApiController extends Controller
             $entry['avg_volume_pasc'] = PascalCurrency::fromMolinas(round($entry['avg_volume'], 0))->getPascal();
             unset($entry['sum_volume']);
             unset($entry['avg_volume']);
+
+            $entry['sum_fee_molina'] = $entry['sum_fee'];
+            $entry['sum_fee_pasc'] = PascalCurrency::fromMolinas($entry['sum_fee'])->getPascal();
+            $entry['avg_fee_molina'] = (string)round($entry['avg_fee'], 0);
+            $entry['avg_fee_pasc'] = PascalCurrency::fromMolinas(round($entry['avg_fee'], 0))->getPascal();
+            unset($entry['sum_fee']);
+            unset($entry['avg_fee']);
             $prepData[] = $entry;
         }
 

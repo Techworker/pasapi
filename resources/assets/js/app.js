@@ -73,21 +73,25 @@ Chart.pluginService.register({
 axios.get('/api/timeline/daily').then((data) => {
     initTypeChart(data.data, 'daily', 'day');
     initVolumeChart(data.data, 'daily', 'day');
+    initFeeChart(data.data, 'daily', 'day');
 });
 
 axios.get('/api/timeline/weekly').then((data) => {
     initTypeChart(data.data, 'weekly', 'week');
     initVolumeChart(data.data, 'weekly', 'week');
+    initFeeChart(data.data, 'weekly', 'week');
 });
 
 axios.get('/api/timeline/monthly').then((data) => {
     initTypeChart(data.data, 'monthly', 'month');
     initVolumeChart(data.data, 'monthly', 'month');
+    initFeeChart(data.data, 'monthly', 'month');
 });
 
 axios.get('/api/timeline/yearly').then((data) => {
     initTypeChart(data.data, 'yearly', 'year');
     initVolumeChart(data.data, 'yearly', 'year');
+    initFeeChart(data.data, 'yearly', 'year');
 });
 
 
@@ -163,7 +167,13 @@ function initVolumeChart(data, type, typeField)
 
     datasets = [];
     datasets.push({
-        label: 'PASC',
+        label: 'PASC Volume',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+    datasets.push({
+        label: 'PASC Fees',
         data: [],
         borderWidth: 1,
         backgroundColor: 'rgba(255,255,255,0)'
@@ -179,6 +189,44 @@ function initVolumeChart(data, type, typeField)
         labels.push(item[typeField]);
         //datasets[0].data.push(item.sum_volume_molina);
         datasets[0].data.push(item.sum_volume_pasc);
+        datasets[1].data.push(item.sum_fee_pasc);
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function initFeeChart(data, type, typeField)
+{
+    const ctx = document.getElementById("fee_" + type);
+    const labels = [];
+
+    datasets = [];
+    datasets.push({
+        label: 'PASC Fees',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+
+    data.forEach((item) => {
+        labels.push(item[typeField]);
+        //datasets[0].data.push(item.sum_volume_molina);
+        datasets[0].data.push(item.sum_fee_pasc);
     });
 
     new Chart(ctx, {
