@@ -50,6 +50,9 @@ class Index extends JsonResource
                 'stats_highest_reward_top10' => [
                     'href' => route('api_stats_highest_reward_top10')
                 ],
+                'foundation' => [
+                    'href' => route('api_foundation')
+                ],
 
                 'timeline_daily' => [
                     'href' => route('api_timeline_daily')
