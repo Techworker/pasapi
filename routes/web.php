@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/operations', function() {
+Route::get('/', function() {
     return redirect()->route('operations');
 });
 
