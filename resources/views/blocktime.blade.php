@@ -26,7 +26,6 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                         <th>Year</th>
-                        <th>Blocktime in seconds (Sum)</th>
                         <th>Blocktime in seconds (Avg)</th>
                         </thead>
                     </table>
@@ -39,7 +38,6 @@
                         <table class="table table-striped table-responsive">
                             <thead>
                             <th>Month</th>
-                            <th>Blocktime in seconds (Sum)</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
@@ -53,7 +51,6 @@
                         <table class="table table-striped table-responsive">
                             <thead>
                             <th>Week</th>
-                            <th>Blocktime in seconds (Sum)</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
@@ -67,7 +64,6 @@
                         <table class="table table-striped table-responsive">
                             <thead>
                             <th>Day</th>
-                            <th>Blocktime in seconds (Sum)</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
