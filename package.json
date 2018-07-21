@@ -23,6 +23,9 @@
         "chart.js": "^2.7.2",
         "chartjs-plugin-zoom": "^0.6.3",
         "color": "^3.0.0",
-        "open-color": "^1.6.3"
+        "element-class": "^0.2.2",
+        "flatpickr": "^4.5.1",
+        "open-color": "^1.6.3",
+        "vanilla-datatables": "^1.6.14"
     }
 }

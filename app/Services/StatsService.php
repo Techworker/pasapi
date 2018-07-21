@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Block;
+use Spatie\ResponseCache\Facades\ResponseCache;
 use Techworker\PascalCoin\PascalCoinRpcClient;
 use Techworker\PascalCoin\Type\Simple\BlockNumber;
 
@@ -101,6 +102,7 @@ class StatsService
         $block = new Block($blockData);
         $block->save();
 
+        ResponseCache::clear();
         return count($allOps);
     }
 

@@ -124,7 +124,7 @@ class ApiController extends Controller
      */
     protected function getRawStats(array $where = [], $groupBy = [], $multi = false, $order = [])
     {
-        $fields = ['volume', 'fee', 'n_operations_single' => 'n_operations'];
+        $fields = ['volume', 'fee', 'duration', 'hashrate', 'n_operations_single' => 'n_operations'];
         for($i = 0; $i <= 9; $i++) {
             $fields[] = 'n_type_' . $i;
         }
@@ -154,7 +154,6 @@ class ApiController extends Controller
         if(count($order) > 0) {
             $query->orderBy($order['field'], $order['order']);
         }
-
         $data = $query->get();
         $prepData = [];
         foreach($data as $entry)

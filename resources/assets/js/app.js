@@ -11,7 +11,6 @@ const axios = require('axios')
 const Chart = require('chart.js');
 const Color = require('color');
 const palette = require('json-loader!open-color/open-color.json');
-const chartjs_plugin_zoom = require('chartjs-plugin-zoom');
 
 const colors = [
     palette['red'],
@@ -70,29 +69,32 @@ Chart.pluginService.register({
         }
     },
 });
-
 axios.get('/api/timeline/daily').then((data) => {
     initTypeChart(data.data, 'daily', 'day');
     initVolumeChart(data.data, 'daily', 'day');
     initFeeChart(data.data, 'daily', 'day');
+    initDurationChart(data.data, 'daily', 'day');
 });
 
 axios.get('/api/timeline/weekly').then((data) => {
     initTypeChart(data.data, 'weekly', 'week');
     initVolumeChart(data.data, 'weekly', 'week');
     initFeeChart(data.data, 'weekly', 'week');
+    initDurationChart(data.data, 'weekly', 'week');
 });
 
 axios.get('/api/timeline/monthly').then((data) => {
     initTypeChart(data.data, 'monthly', 'month');
     initVolumeChart(data.data, 'monthly', 'month');
     initFeeChart(data.data, 'monthly', 'month');
+    initDurationChart(data.data, 'monthly', 'month');
 });
 
 axios.get('/api/timeline/yearly').then((data) => {
     initTypeChart(data.data, 'yearly', 'year');
     initVolumeChart(data.data, 'yearly', 'year');
     initFeeChart(data.data, 'yearly', 'year');
+    initDurationChart(data.data, 'yearly', 'year');
 });
 
 axios.get('/api/miners/daily').then((data) => {
@@ -107,7 +109,6 @@ axios.get('/api/miners/monthly').then((data) => {
 axios.get('/api/miners/yearly').then((data) => {
     initMinerChart(data.data, 'yearly', 'year');
 });
-
 
 function initCharts()
 {
@@ -130,6 +131,9 @@ const OPTYPES = [
 function initTypeChart(data, type, typeField)
 {
     const ctx = document.getElementById("types_" + type);
+    if(ctx === null) {
+        return;
+    }
     const labels = [];
 
     const datasets = {};
@@ -167,42 +171,25 @@ function initTypeChart(data, type, typeField)
         }
     };
 
-    if(type === 'daily') {
-        // Container for pan options
-        options.pan = {
-            // Boolean to enable panning
-            enabled: true,
-
-                // Panning directions. Remove the appropriate direction to disable
-                // Eg. 'y' would only allow panning in the y direction
-                mode: 'xy'
-        };
-
-        // Container for zoom options
-        options.zoom = {
-            // Boolean to enable zooming
-            enabled: true,
-
-                // Zooming directions. Remove the appropriate direction to disable
-                // Eg. 'y' would only allow zooming in the y direction
-                mode: 'xy',
-        };
-    }
-
-    console.log(options);
     new Chart(ctx, {
         type: 'line',
+        responsive: true,
         data: {
             labels: labels,
             datasets: datasets2
         },
         options: options
     });
+    document.querySelectorAll('.sk-cube-grid').forEach(($el) => $el.parentElement.removeChild($el));
+
 }
 
 function initVolumeChart(data, type, typeField)
 {
     const ctx = document.getElementById("volume_" + type);
+    if(ctx === null) {
+        return;
+    }
     const labels = [];
 
     datasets = [];
@@ -250,9 +237,54 @@ function initVolumeChart(data, type, typeField)
     });
 }
 
+
+function initDurationChart(data, type, typeField)
+{
+    const ctx = document.getElementById("duration_" + type);
+    if(ctx === null) {
+        return;
+    }
+    const labels = [];
+
+    datasets = [];
+    datasets.push({
+        label: 'AVG block duration in seconds',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+
+    data.forEach((item) => {
+        labels.push(item[typeField]);
+        //datasets[0].data.push(item.sum_volume_molina);
+        datasets[0].data.push(item.avg_duration);
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
 function initFeeChart(data, type, typeField)
 {
     const ctx = document.getElementById("fee_" + type);
+    if(ctx === null) {
+        return;
+    }
     const labels = [];
 
     datasets = [];
@@ -291,6 +323,9 @@ function initFeeChart(data, type, typeField)
 function initMinerChart(data, type, typeField)
 {
     const ctx = document.getElementById("miner_" + type);
+    if(ctx === null) {
+        return;
+    }
     const labels = [];
 
     const datasets = [];

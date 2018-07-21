@@ -42,7 +42,7 @@ class Fix extends Command
     {
         $ct = 0;
         $size = 1;
-        Block::orderBy('block', 'ASC')->where('hashrate', '=', 0)->where('block', '>', 0)->chunk($size, function ($blocks) use($rpc, &$ct, $size)
+        Block::orderBy('block', 'ASC')->where('n_type_o', '=', 0)->where('block', '>', 0)->chunk($size, function ($blocks) use($rpc, &$ct, $size)
         {
             $blockNumbers = $blocks->pluck('block');
             $start = $blockNumbers[0];

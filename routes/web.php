@@ -11,9 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/operations', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@operations'])->name('operations');
+Route::get('/volume', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@volume'])->name('volume');
+Route::get('/fees', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@fees'])->name('fees');
+Route::get('/miners', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@miners'])->name('miners');
+Route::get('/blocktime', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@blocktime'])->name('blocktime');
+Route::get('/hashrate', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@hashrate'])->name('hashrate');
+Route::get('/api', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@api'])->name('api');
+Route::get('/foundation', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@foundation'])->name('foundation');
 
 Auth::routes();
 
