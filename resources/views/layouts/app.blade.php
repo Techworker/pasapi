@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-main">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="https://www.pascalcoin.org/images/logo.png" /> Transparency
+                    <img src="https://www.pascalcoin.org/images/logo.png" /> Transparency<br />Block {{$latest_block_no}}
                 </a>
             </div>
         </nav>

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Block;
 use App\RPC;
 use App\Services\StatsService;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 use Graze\GuzzleHttp\JsonRpc\Client;
@@ -20,7 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+        $latestBlock = Block::orderBy('block', 'DESC')->first();
+        View::share( 'latest_block_no', $latestBlock->block);
     }
 
     /**
@@ -37,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(StatsService::class, function($app) {
             return new StatsService($app->get(PascalCoinRpcClient::class), new Block);
         });
+
     }
 }
