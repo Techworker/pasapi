@@ -12,7 +12,7 @@
         <h2>Current stats</h2>
         <p>Blocks since 210240: <b>{{$reference_block - $intro_block}}</b></p>
         <p>Accounts owned by the foundation: <b>{{$n_accounts}}</b></p>
-        <p>PASC owned by the foundation: <b>{{$amount_pasc}} PSC</b></p>
+        <p>PASC owned by the foundation: <b>{{$amount_pasc}} PASC</b></p>
     </div>
 
 @endsection
