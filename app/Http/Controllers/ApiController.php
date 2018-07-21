@@ -196,6 +196,67 @@ class ApiController extends Controller
     }
 
     /**
+     * A small helper function to retrieve statistics.
+     *
+     * @param array $where
+     * @return array
+     */
+    protected function getMinerStats($groupBy = [], $order = [])
+    {
+        $query = \DB::table('blocks');
+
+        $raw = [];
+        $raw[] = 'COUNT(*) as ct';
+        $raw[] = 'SUBSTRING(payload, 1, 8) AS pl';
+        $raw[] = $groupBy['expr'] . ' AS ' . $groupBy['alias'];
+        $query->selectRaw(implode(', ', $raw));
+        $query->groupBy($groupBy['alias']);
+        $query->groupBy('pl');
+        $query->orderBy($order['field'], $order['order']);
+
+        $data = $query->get();
+        $prepData = [];
+        foreach($data as $entry)
+        {
+            $entry = collect($entry)->toArray();
+            $prepData[] = $entry;
+        }
+
+        $grouped = collect($prepData)->groupBy($groupBy['alias']);
+        $result = [];
+        foreach($grouped as $gp => $miners) {
+            $coinotron = $nanopool = $others = 0;
+            foreach($miners as $miner) {
+                if(substr($miner['pl'], 0, 8) === 'Nanopool') {
+                    $nanopool += (int)$miner['ct'];
+                } else if(substr($miner['pl'], 0, 8) === 'coinotro') {
+                    $coinotron += (int)$miner['ct'];
+                } else {
+                    $others += (int)$miner['ct'];
+                }
+            }
+
+            $result[] = [
+                $groupBy['alias'] => $gp,
+                'ct' => $nanopool,
+                'type' => 'nanopool'
+            ];
+            $result[] = [
+                $groupBy['alias'] => $gp,
+                'ct' => $coinotron,
+                'type' => 'coinotron'
+            ];
+            $result[] = [
+                $groupBy['alias'] => $gp,
+                'ct' => $others,
+                'type' => 'others'
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
      * Gets data of the foundation accounts.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -210,6 +271,34 @@ class ApiController extends Controller
             'amount_molina' => (string)PascalCurrency::fromMolinas(($latestBlock->block - 210240) * 100000)->getMolinas(),
             'amount_pasc' => (string)PascalCurrency::fromMolinas(($latestBlock->block - 210240) * 100000)->getPascal()
         ]);
+    }
+
+    public function minersDaily() {
+        return response()->json($this->getMinerStats(
+            ['expr' => "FROM_UNIXTIME(tstamp, '%Y-%m-%d')", 'alias' => 'day'],
+            ['field' => 'day', 'order' => 'ASC']
+        ));
+    }
+
+    public function minersWeekly() {
+        return response()->json($this->getMinerStats(
+            ['expr' => "FROM_UNIXTIME(tstamp, '%Y-%U')", 'alias' => 'week'],
+            ['field' => 'week', 'order' => 'ASC']
+        ));
+    }
+
+    public function minersMonthly() {
+        return response()->json($this->getMinerStats(
+            ['expr' => "FROM_UNIXTIME(tstamp, '%Y-%m')", 'alias' => 'month'],
+            ['field' => 'month', 'order' => 'ASC']
+        ));
+    }
+
+    public function minersYearly() {
+        return response()->json($this->getMinerStats(
+            ['expr' => "FROM_UNIXTIME(tstamp, '%Y')", 'alias' => 'year'],
+            ['field' => 'year', 'order' => 'ASC']
+        ));
     }
 
     public function timelineDaily() {

@@ -26,6 +26,11 @@ Route::get('/timeline/weekly', 'ApiController@timelineWeekly')->name('api_timeli
 Route::get('/timeline/monthly', 'ApiController@timelineMonthly')->name('api_timeline_monthly');
 Route::get('/timeline/yearly', 'ApiController@timelineYearly')->name('api_timeline_yearly');
 
+Route::get('/miners/daily', 'ApiController@minersDaily')->name('api_miners_daily');
+Route::get('/miners/weekly', 'ApiController@minersWeekly')->name('api_miners_weekly');
+Route::get('/miners/monthly', 'ApiController@minersMonthly')->name('api_miners_monthly');
+Route::get('/miners/yearly', 'ApiController@minersYearly')->name('api_miners_yearly');
+
 Route::get('/foundation', 'ApiController@foundation')->name('api_foundation');
 
 

@@ -11,6 +11,7 @@ const axios = require('axios')
 const Chart = require('chart.js');
 const Color = require('color');
 const palette = require('json-loader!open-color/open-color.json');
+const chartjs_plugin_zoom = require('chartjs-plugin-zoom');
 
 const colors = [
     palette['red'],
@@ -94,6 +95,19 @@ axios.get('/api/timeline/yearly').then((data) => {
     initFeeChart(data.data, 'yearly', 'year');
 });
 
+axios.get('/api/miners/daily').then((data) => {
+    initMinerChart(data.data, 'daily', 'day');
+});
+axios.get('/api/miners/weekly').then((data) => {
+    initMinerChart(data.data, 'weekly', 'week');
+});
+axios.get('/api/miners/monthly').then((data) => {
+    initMinerChart(data.data, 'monthly', 'month');
+});
+axios.get('/api/miners/yearly').then((data) => {
+    initMinerChart(data.data, 'yearly', 'year');
+});
+
 
 function initCharts()
 {
@@ -142,21 +156,47 @@ function initTypeChart(data, type, typeField)
     });
 
     let datasets2 = Object.keys(datasets).map((k) => datasets[k]);
+
+    let options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    if(type === 'daily') {
+        // Container for pan options
+        options.pan = {
+            // Boolean to enable panning
+            enabled: true,
+
+                // Panning directions. Remove the appropriate direction to disable
+                // Eg. 'y' would only allow panning in the y direction
+                mode: 'xy'
+        };
+
+        // Container for zoom options
+        options.zoom = {
+            // Boolean to enable zooming
+            enabled: true,
+
+                // Zooming directions. Remove the appropriate direction to disable
+                // Eg. 'y' would only allow zooming in the y direction
+                mode: 'xy',
+        };
+    }
+
+    console.log(options);
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: datasets2
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
+        options: options
     });
 }
 
@@ -227,6 +267,65 @@ function initFeeChart(data, type, typeField)
         labels.push(item[typeField]);
         //datasets[0].data.push(item.sum_volume_molina);
         datasets[0].data.push(item.sum_fee_pasc);
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
+function initMinerChart(data, type, typeField)
+{
+    const ctx = document.getElementById("miner_" + type);
+    const labels = [];
+
+    const datasets = [];
+    datasets.push({
+        label: 'Nanopool',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+    datasets.push({
+        label: 'Coinotron',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+    datasets.push({
+        label: 'Others',
+        data: [],
+        borderWidth: 1,
+        backgroundColor: 'rgba(255,255,255,0)'
+    });
+
+    data.forEach((item) => {
+        if(labels.indexOf(item[typeField]) === -1) {
+            labels.push(item[typeField]);
+        }
+        if(item.type === 'nanopool') {
+            datasets[0].data.push(item.ct);
+        }
+        if(item.type === 'coinotron') {
+            datasets[1].data.push(item.ct);
+        }
+        if(item.type === 'others') {
+            datasets[2].data.push(item.ct);
+        }
     });
 
     new Chart(ctx, {

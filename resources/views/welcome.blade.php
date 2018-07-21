@@ -57,6 +57,24 @@
                     <canvas id="fee_daily" width="400" height="200"></canvas>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card mt--2">
+                    <div class="card-header">Yearly miners</div>
+                    <canvas id="miner_yearly" width="400" height="200"></canvas>
+                </div>
+                <div class="card mt--2">
+                    <div class="card-header">Monthly miners</div>
+                    <canvas id="miner_monthly" width="400" height="200"></canvas>
+                </div>
+                <div class="card mt--2">
+                    <div class="card-header">Weekly miners</div>
+                    <canvas id="miner_weekly" width="400" height="200"></canvas>
+                </div>
+                <div class="card mt--2">
+                    <div class="card-header">Daily miners</div>
+                    <canvas id="miner_daily" width="400" height="200"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
