@@ -12,6 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
+    .js('resources/assets/js/misc.js', 'public/js')
     .js('resources/assets/js/operations.js', 'public/js')
     .js('resources/assets/js/fees.js', 'public/js')
     .js('resources/assets/js/miners.js', 'public/js')

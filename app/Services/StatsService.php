@@ -103,6 +103,21 @@ class StatsService
         $block->save();
 
         ResponseCache::clear();
+        $routeCollection = \Route::getRoutes();
+        foreach ($routeCollection as $value) {
+            if(!$value->getName()) {
+                continue;
+            }
+
+            if(substr($value->getName(), 0, 4) === 'api_') {
+                try {
+                    file-get_contents(route($value->getName()));
+                } catch (\Exception $ex) {
+
+                }
+            }
+        }
+
         return count($allOps);
     }
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Block;
-use Illuminate\Http\Request;
 use Techworker\PascalCoin\Type\Simple\PascalCurrency;
 
 class HomeController extends Controller

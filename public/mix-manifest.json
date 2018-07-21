@@ -6,5 +6,6 @@
     "/js/fees.js": "/js/fees.js",
     "/js/blocktime.js": "/js/blocktime.js",
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/misc.js": "/js/misc.js"
 }
