@@ -1,11 +1,11 @@
 {
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
     "/js/volume.js": "/js/volume.js",
     "/js/operations.js": "/js/operations.js",
     "/js/miners.js": "/js/miners.js",
     "/js/hashrate.js": "/js/hashrate.js",
     "/js/fees.js": "/js/fees.js",
     "/js/blocktime.js": "/js/blocktime.js",
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
     "/js/misc.js": "/js/misc.js"
 }

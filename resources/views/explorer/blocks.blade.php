@@ -1,0 +1,49 @@
+@extends('layouts.app')
+
+@section('script')
+    <script src="{{ asset('js/misc.js') }}" defer></script>
+@endsection
+
+@section('content')
+    <div class="container">
+        <h1>Blocks</h1>
+        <hr class="div"/>
+        <p>Hall</p>
+        <div class="card mt--2" id="optypes-monthly">
+            <div class="card-header">
+                @if($prev !== null)
+                <a href="{{route('explorer_blocks', ['page' => $page - 1])}}" class="btn btn-info"><i class="fas fa-chevron-left"></i> Blocks {{$prev['from']}} to {{$prev['to']}}</a>
+                @endif
+                @if($next !== null)
+                <a href="{{route('explorer_blocks', ['page' => $page + 1])}}" class="btn btn-info fa-pull-right"> Blocks {{$next['from']}} to {{$next['to']}} <i class="fas fa-chevron-right pull-right"></i></a>
+                @endif
+            </div>
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <th>#</th>
+            <th>Time</th>
+            <th>Operations</th>
+            <th>Payload</th>
+            <th>Volume</th>
+            <th>Fee</th>
+            </thead>
+            <tbody>
+                <?php /** @var $block \Techworker\PascalCoin\Type\Block */ ?>
+                @foreach($blocks as $block)
+                <tr>
+                    <td><a href="{{route('explorer_block_detail', ['block' => $block->getBlock()->getValue()])}}">{{$block->getBlock()->getValue()}}</a></td>
+                    <td>{{\Carbon\Carbon::createFromTimestampUTC($block->getTimestamp())->toAtomString()}}</td>
+                    <td>{{$block->getNumberOfOperations()}}</td>
+                    <td>{{$block->getPayload()}}</td>
+                    <td>TODO</td>
+                    <td>{{$block->getFee()->getPascal()}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        </div>
+        </div>
+        </div>
+    </div>
+@endsection

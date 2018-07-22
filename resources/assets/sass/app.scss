@@ -105,7 +105,7 @@ p {
     font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
   }
-  .active a {
+  > .active a {
     text-decoration: underline;
     font-weight: 600;
   }
@@ -174,7 +174,10 @@ p {
   }
 }
 
-table.table.dataTable-table {
+table.table.dataTable-table, table.table {
+  a {
+    color: black;
+  }
   thead {
     th {
       white-space: nowrap !important;
@@ -188,5 +191,34 @@ table.table.dataTable-table {
     td, tr {
       white-space: nowrap !important;
     }
+  }
+}
+
+.info {
+  .value {
+    padding: 4px;
+    &:hover {
+      background: #f0f0f0;
+    }
+    .value-label {
+      text-transform: uppercase;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      display: inline;
+      font-weight: bold;
+      margin-bottom: 0;
+      margin-top: 4px;
+    }
+    .value-value {
+      display: inline;
+      a {
+        color: black;
+      }
+    }
+  }
+}
+
+.card.key-infos {
+  .card-header {
+    background-color: $primary;
   }
 }

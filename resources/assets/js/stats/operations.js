@@ -5,11 +5,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('../bootstrap');
 
 const axios = require('axios');
 const elementClass = require('element-class');
-const Chart = require('./chart');
+const Chart = require('../chart');
 const flatpickr = require("flatpickr");
 const DataTable = require("vanilla-datatables");
 
@@ -70,6 +70,19 @@ document.querySelectorAll('#filter-optypes a').forEach(($a) => {
 
 document.querySelector('#filter-optypes a').click();
 
+const OPTYPES = [
+    'Blockchain reward',
+    'Transaction',
+    'Change key',
+    'Recover founds (lost keys)',
+    'List account for sale',
+    'Delist account (not for sale)',
+    'Buy account',
+    'Change key (signed by another account)',
+    'Change account info',
+    'Multioperation',
+];
+
 function initTable(table, data, type, typeField)
 {
     let dataTable = new DataTable(table);
@@ -78,7 +91,10 @@ function initTable(table, data, type, typeField)
     data.forEach((item) => {
         let row = [];
         row.push(item[typeField]);
-        row.push(item.avg_duration);
+        row.push(item.sum_n_operations);
+        for (let i = 0; i < 10; i++) {
+            row.push(item[`sum_n_type_${i}`]);
+        }
         allData.push(row);
     });
     dataTable.rows().add(allData);
@@ -89,16 +105,28 @@ function initChart(ctx, data, type, typeField)
     const labels = [];
 
     const datasets = {};
-    datasets.avg = {
-        label: 'AVG Blocktime in seconds',
+    datasets.n_operations = {
+        label: 'All Operations',
         data: [],
         pointRadius: 2,
-        borderWidth: 1,
-        backgroundColor: 'rgba(255,255,255,0)'
     };
+    for(let i = 0; i < 10; i++) {
+        datasets[`n_type_${i}`] = {
+            label: OPTYPES[i],
+            data: [],
+            pointRadius: 2,
+        };
+    }
     data.forEach((item) => {
         labels.push(item[typeField]);
-        datasets.avg.data.push(item.avg_duration);
+        for(let i = 0; i < 10; i++) {
+            datasets[`n_type_${i}`].data.push(item[`sum_n_type_${i}`]);
+            datasets[`n_type_${i}`].borderWidth = 1;
+            datasets[`n_type_${i}`].backgroundColor = 'rgba(255,255,255,0)';
+        }
+        datasets.n_operations.data.push(item.sum_n_operations);
+        datasets.n_operations.borderWidth = 1;
+        datasets.n_operations.backgroundColor = 'rgba(255,255,255,0)';
     });
 
     let datasets2 = Object.keys(datasets).map((k) => datasets[k]);

@@ -13,10 +13,10 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/misc.js', 'public/js')
-    .js('resources/assets/js/operations.js', 'public/js')
-    .js('resources/assets/js/fees.js', 'public/js')
-    .js('resources/assets/js/miners.js', 'public/js')
-    .js('resources/assets/js/blocktime.js', 'public/js')
-    .js('resources/assets/js/hashrate.js', 'public/js')
-    .js('resources/assets/js/volume.js', 'public/js')
+    .js('resources/assets/js/stats/operations.js', 'public/js')
+    .js('resources/assets/js/stats/fees.js', 'public/js')
+    .js('resources/assets/js/stats/miners.js', 'public/js')
+    .js('resources/assets/js/stats/blocktime.js', 'public/js')
+    .js('resources/assets/js/stats/hashrate.js', 'public/js')
+    .js('resources/assets/js/stats/volume.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');

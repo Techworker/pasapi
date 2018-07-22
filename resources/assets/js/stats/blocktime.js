@@ -5,11 +5,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('../bootstrap');
 
 const axios = require('axios');
 const elementClass = require('element-class');
-const Chart = require('./chart');
+const Chart = require('../chart');
 const flatpickr = require("flatpickr");
 const DataTable = require("vanilla-datatables");
 
@@ -78,7 +78,7 @@ function initTable(table, data, type, typeField)
     data.forEach((item) => {
         let row = [];
         row.push(item[typeField]);
-        row.push(item.avg_hashrate);
+        row.push(item.avg_duration);
         allData.push(row);
     });
     dataTable.rows().add(allData);
@@ -90,7 +90,7 @@ function initChart(ctx, data, type, typeField)
 
     const datasets = {};
     datasets.avg = {
-        label: 'AVG hashrate',
+        label: 'AVG Blocktime in seconds',
         data: [],
         pointRadius: 2,
         borderWidth: 1,
@@ -98,7 +98,7 @@ function initChart(ctx, data, type, typeField)
     };
     data.forEach((item) => {
         labels.push(item[typeField]);
-        datasets.avg.data.push(item.avg_hashrate);
+        datasets.avg.data.push(item.avg_duration);
     });
 
     let datasets2 = Object.keys(datasets).map((k) => datasets[k]);

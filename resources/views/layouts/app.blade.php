@@ -10,8 +10,8 @@
 
     <title>PascalCoin Stats</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     @yield('script')
-
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -40,32 +40,26 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item{{Route::currentRouteName() === 'operations' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('operations')}}">Operations</a>
+                    <li class="nav-item{{Route::currentRouteName() === 'explorer_blocks' ? ' active' : ''}}">
+                        <a class="nav-link" href="{{route('explorer_blocks')}}">Blocks</a>
                     </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'volume' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('volume')}}">Volume</a>
-                    </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'fees' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('fees')}}">Fees</a>
-                    </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'miners' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('miners')}}">Miners</a>
-                    </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'blocktime' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('blocktime')}}">Block Time</a>
-                    </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'hashrate' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('hashrate')}}">Hash rate</a>
-                    </li>
-                    <li class="nav-item{{Route::currentRouteName() === 'foundation' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('foundation')}}">Foundation</a>
+                    <li class="nav-item dropdown {{Request::is('stats/*') ? 'active' : ''}}">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Statistics</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{route('stats_operations')}}">Operations</a>
+                            <a class="dropdown-item" href="{{route('stats_volume')}}">Volume</a>
+                            <a class="dropdown-item" href="{{route('stats_fees')}}">Fees</a>
+                            <a class="dropdown-item" href="{{route('stats_miners')}}">Miners</a>
+                            <a class="dropdown-item" href="{{route('stats_blocktime')}}">Block Time</a>
+                            <a class="dropdown-item" href="{{route('stats_hashrate')}}">Hash rate</a>
+                            <a class="dropdown-item" href="{{route('stats_foundation')}}">Foundation</a>
+                        </div>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right navbar-main">
                     <!--li><a class="nav-link" href="#" data-toggle="modal" data-target="#donate">Donate</a></li-->
                     <li class="nav-item{{Route::currentRouteName() === 'api' ? ' active' : ''}}">
-                        <a class="nav-link" href="{{route('api')}}">API</a>
+                        <a class="nav-link" href="{{route('stats_api')}}">API</a>
                     </li>
                 </ul>
             </div>

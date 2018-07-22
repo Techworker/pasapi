@@ -23,24 +23,28 @@
                         <canvas id="yearly"></canvas>
                         @include('loading')
                     </div>
-                    <table class="table table-striped table-responsive">
+                    <div class="table-responsive">
+                    <table class="table table-striped">
                         <thead>
                         <th>Year</th>
                         <th>Blocktime in seconds (Avg)</th>
                         </thead>
                     </table>
+                    </div>
                 </div>
                 <div class="card mt--2" id="optypes-monthly">
                     <div class="card-header">Monthly blocktime</div>
                     <div class="chart">
                         <canvas id="monthly"></canvas>
                         @include('loading')
-                        <table class="table table-striped table-responsive">
+                        <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <th>Month</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
+                        </div>
                     </div>
                 </div>
                 <div class="card mt--2" id="optypes-weekly">
@@ -48,12 +52,14 @@
                     <div class="chart">
                         <canvas id="weekly"></canvas>
                         @include('loading')
-                        <table class="table table-striped table-responsive">
+                        <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <th>Week</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
+                        </div>
                     </div>
                 </div>
                 <div class="card mt--2" id="optypes-daily">
@@ -61,12 +67,14 @@
                     <div class="chart">
                         <canvas id="daily"></canvas>
                         @include('loading')
-                        <table class="table table-striped table-responsive">
+                        <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <th>Day</th>
                             <th>Blocktime in seconds (Avg)</th>
                             </thead>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -5,11 +5,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('../bootstrap');
 
 const axios = require('axios');
 const elementClass = require('element-class');
-const Chart = require('./chart');
+const Chart = require('../chart');
 const flatpickr = require("flatpickr");
 const DataTable = require("vanilla-datatables");
 
