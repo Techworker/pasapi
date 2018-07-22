@@ -63,7 +63,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right navbar-main">
-                    <li><a class="nav-link" href="#" data-toggle="modal" data-target="#donate">Donate</a></li>
+                    <!--li><a class="nav-link" href="#" data-toggle="modal" data-target="#donate">Donate</a></li-->
                     <li class="nav-item{{Route::currentRouteName() === 'api' ? ' active' : ''}}">
                         <a class="nav-link" href="{{route('api')}}">API</a>
                     </li>
