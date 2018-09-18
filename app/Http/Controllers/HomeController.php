@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Block;
 use Illuminate\Pagination\Paginator;
+use Techworker\CryptoCurrency\Currencies\PascalCoin;
 use Techworker\PascalCoin\Type\Simple\PascalCurrency;
 
 class HomeController extends Controller
@@ -49,8 +50,8 @@ class HomeController extends Controller
             'reference_block' => $latestBlock->block,
             'intro_block' => 210240,
             'n_accounts' => $latestBlock->block - 210240,
-            'amount_molina' => (string)PascalCurrency::fromMolinas(($latestBlock->block - 210240) * 100000)->getMolinas(),
-            'amount_pasc' => (string)PascalCurrency::fromMolinas(($latestBlock->block - 210240) * 100000)->getPascal()
+            'amount_molina' => (string)(new PascalCoin(($latestBlock->block - 210240) * 100000, PascalCoin::MOLINA))->format(PascalCoin::MOLINA),
+            'amount_pasc' => (string)(new PascalCoin(($latestBlock->block - 210240) * 100000, PascalCoin::MOLINA))->format(PascalCoin::PASC),
         ]);
     }
 }
