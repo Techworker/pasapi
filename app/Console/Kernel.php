@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('pascex:sync')->everyMinute()->withoutOverlapping();
-        $schedule->command('pascex:sync-accounts')->hourly()->withoutOverlapping();
+        $schedule->command('pascex:sync-accounts')->dailyAt('01:00')->withoutOverlapping();
     }
 
     /**
