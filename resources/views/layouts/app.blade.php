@@ -53,6 +53,7 @@
                             <a class="dropdown-item" href="{{route('stats_blocktime')}}">Block Time</a>
                             <a class="dropdown-item" href="{{route('stats_hashrate')}}">Hash rate</a>
                             <a class="dropdown-item" href="{{route('stats_foundation')}}">Foundation</a>
+                            <a class="dropdown-item" href="{{route('stats_richest')}}">Richest accounts</a>
                         </div>
                     </li>
                 </ul>

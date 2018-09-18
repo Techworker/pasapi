@@ -8,7 +8,7 @@
     <div class="container">
         <h1>Blocks</h1>
         <hr class="div"/>
-        <p>Hall</p>
+        <p>You are looking at blocks {{$start}} to {{$end}} in descending order. </p>
         <div class="card mt--2" id="optypes-monthly">
             <div class="card-header">
                 @if($prev !== null)
@@ -32,12 +32,12 @@
                 <?php /** @var $block \Techworker\PascalCoin\Type\Block */ ?>
                 @foreach($blocks as $block)
                 <tr>
-                    <td><a href="{{route('explorer_block_detail', ['block' => $block->getBlock()->getValue()])}}">{{$block->getBlock()->getValue()}}</a></td>
+                    <td><a href="{{route('explorer_block_detail', ['block' => $block->getBlock()])}}">{{$block->getBlock()}}</a></td>
                     <td>{{\Carbon\Carbon::createFromTimestampUTC($block->getTimestamp())->toAtomString()}}</td>
                     <td>{{$block->getNumberOfOperations()}}</td>
                     <td>{{$block->getPayload()}}</td>
-                    <td>TODO</td>
-                    <td>{{$block->getFee()->getPascal()}}</td>
+                    <td>{{$additional[$block->getBlock()]['volume']->format(\Techworker\CryptoCurrency\Currencies\PascalCoin::PASC)}}</td>
+                    <td>{{$block->getFee()}}</td>
                 </tr>
                 @endforeach
             </tbody>

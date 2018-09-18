@@ -18,6 +18,7 @@ Route::get('/operations', function() {
     return redirect()->route('stats_operations');
 });
 
+Route::get('/stats/richest', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@richest'])->name('stats_richest');
 Route::get('/stats/operations', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@operations'])->name('stats_operations');
 Route::get('/stats/volume', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@volume'])->name('stats_volume');
 Route::get('/stats/fees', ['middleware' => 'doNotCacheResponse', 'uses' => 'HomeController@fees'])->name('stats_fees');

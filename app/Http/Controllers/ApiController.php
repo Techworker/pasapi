@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
 use App\Block;
 use App\Http\Resources\BlockCollection;
 use App\Http\Resources\Index as IndexResource;
 use App\Http\Resources\Block as BlockResource;
-use Illuminate\Http\Request;
-use Techworker\PascalCoin\Type\Simple\PascalCurrency;
+use Techworker\CryptoCurrency\Currencies\PascalCoin as PascalCoinCurrency;
+use Techworker\PascalCoin\Type\Simple\AccountNumber;
 
 class ApiController extends Controller
 {
@@ -172,16 +173,16 @@ class ApiController extends Controller
             $entry['avg_hashrate'] = (string)round($entry['avg_hashrate']);
 
             $entry['sum_volume_molina'] = $entry['sum_volume'];
-            $entry['sum_volume_pasc'] = PascalCurrency::fromMolinas($entry['sum_volume'])->getPascal();
+            $entry['sum_volume_pasc'] = (new PascalCoinCurrency($entry['sum_volume'], PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC);
             $entry['avg_volume_molina'] = (string)round($entry['avg_volume'], 0);
-            $entry['avg_volume_pasc'] = PascalCurrency::fromMolinas(round($entry['avg_volume'], 0))->getPascal();
+            $entry['avg_volume_pasc'] = (new PascalCoinCurrency($entry['avg_volume'], PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC);
             unset($entry['sum_volume']);
             unset($entry['avg_volume']);
 
             $entry['sum_fee_molina'] = $entry['sum_fee'];
-            $entry['sum_fee_pasc'] = PascalCurrency::fromMolinas($entry['sum_fee'])->getPascal();
+            $entry['sum_fee_pasc'] = (new PascalCoinCurrency($entry['sum_fee'], PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC);
             $entry['avg_fee_molina'] = (string)round($entry['avg_fee'], 0);
-            $entry['avg_fee_pasc'] = PascalCurrency::fromMolinas(round($entry['avg_fee'], 0))->getPascal();
+            $entry['avg_fee_pasc'] = (new PascalCoinCurrency($entry['avg_fee'], PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC);
             unset($entry['sum_fee']);
             unset($entry['avg_fee']);
             $prepData[] = $entry;
@@ -339,5 +340,25 @@ class ApiController extends Controller
                 ['field' => 'year', 'order' => 'ASC']
             )
         );
+    }
+
+    public function richest() {
+        $accounts = Account::orderBy('balance', 'DESC')->take(500)->get()->toArray();
+        $jsonAccounts = [];
+        $block = Block::orderBy('block', 'DESC')->first();
+        $pascAvailable = (new PascalCoinCurrency((210240 * 100) + (($block->block - 210240) * 50)))->format(PascalCoinCurrency::MOLINA);
+        foreach($accounts as $account) {
+
+            $jsonAccounts[] = [
+                'account' => (new AccountNumber($account['account']))->__toString(),
+                'balance_molina_' => (string)$account['balance'],
+                'balance_pasc' => (new PascalCoinCurrency($account['balance'], PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC),
+                'percent' => round($account['balance'] * 100 / $pascAvailable, 2),
+                'type' => $account['type'],
+                'name' => $account['name'],
+                'nops' => $account['nops']
+            ];
+        }
+        return response()->json($jsonAccounts);
     }
 }

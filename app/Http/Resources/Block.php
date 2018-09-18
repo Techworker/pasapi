@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Techworker\PascalCoin\Type\Simple\PascalCurrency;
+use Techworker\CryptoCurrency\Currencies\PascalCoin as PascalCoinCurrency;
 
 class Block extends JsonResource
 {
@@ -25,9 +25,9 @@ class Block extends JsonResource
             'utc' => Carbon::createFromTimestampUTC($block->tstamp)->toIso8601String(),
             'enc_pubkey' => $block->enc_pubkey,
             'reward' => $block->reward,
-            'reward_pasc' => PascalCurrency::fromMolinas($block->reward)->getPascal(),
+            'reward_pasc' => (new PascalCoinCurrency($block->reward, PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC),
             'fee' => $block->fee,
-            'fee_pasc' => PascalCurrency::fromMolinas($block->fee)->getPascal(),
+            'fee_pasc' => (new PascalCoinCurrency($block->fee, PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC),
             'ver' => $block->ver,
             'payload' => $block->payload,
             'n_type_0' => $block->n_type_0,
@@ -48,7 +48,7 @@ class Block extends JsonResource
             'n_operations_multi' => $block->n_operations_multi,
             'hashrate' => (string)$block->hashrate,
             'volume' => (string)$block->volume,
-            'volume_pasc' => PascalCurrency::fromMolinas($block->volume)->getPascal(),
+            'volume_pasc' => (new PascalCoinCurrency($block->volume, PascalCoinCurrency::MOLINA))->format(PascalCoinCurrency::PASC),
             'duration' => $block->duration
         ];
         //print_r($request);

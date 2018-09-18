@@ -11,6 +11,13 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "path",
+            "url": "../cryptocurrency",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {

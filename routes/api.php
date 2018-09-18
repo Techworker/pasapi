@@ -34,6 +34,8 @@ Route::get('/miners/yearly', 'ApiController@minersYearly')->name('api_miners_yea
 Route::get('/foundation', 'ApiController@foundation')->name('api_foundation');
 
 
+Route::get('/stats/richest', 'ApiController@richest')->name('api_richest');
+
 Route::get('/stats', 'ApiController@stats')->name('api_stats');
 Route::get('/stats/24', 'ApiController@stats24')->name('api_stats_24');
 Route::get('/stats/highest/volume', 'ApiController@statsHighestVolume')->name('api_stats_highest_volume');

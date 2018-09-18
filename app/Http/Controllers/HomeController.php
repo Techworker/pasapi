@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Block;
+use Illuminate\Pagination\Paginator;
 use Techworker\PascalCoin\Type\Simple\PascalCurrency;
 
 class HomeController extends Controller
@@ -35,6 +36,9 @@ class HomeController extends Controller
     }
     public function hashrate() {
         return view('hashrate');
+    }
+    public function richest() {
+        return view('richest');
     }
     public function api() {
         return view('api');

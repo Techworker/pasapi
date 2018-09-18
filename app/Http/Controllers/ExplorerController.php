@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Block;
 use Illuminate\Http\Request;
-use Techworker\PascalCoin\PascalCoinRpcClient;
+use Techworker\PascalCoin\PascalCoin;
 use Techworker\PascalCoin\Type\Simple\BlockNumber;
+use Techworker\CryptoCurrency\Currencies\PascalCoin as PascalCoinCurrency;
 
 class ExplorerController extends Controller
 {
-    public function blocks(Request $request, PascalCoinRpcClient $client)
+    public function blocks(Request $request, PascalCoin $client)
     {
         $page = (int)$request->get('page', 1);
-        $count = $client->getBlockCount();
+        $count = \App\Block::count();
 
         $prev = ['from' => $count - (($page - 1) * 10), 'to' => $count - (($page - 1) * 10) + 9];
         if ($page === 1) {
@@ -25,32 +27,46 @@ class ExplorerController extends Controller
             $next = null;
         }
 
-        $s = $count - ($page * 10);
-        $e = $count - ($page * 10) + 10 - 1;
-        if ($s < 0) {
-            $s = 1;
+        $start = $count - ($page * 10);
+        $end = $count - ($page * 10) + 10 - 1;
+        if ($start < 0) {
+            $start = 1;
         }
-        $blocks = $client->getBlocks(null, $s, $e);
 
+        /** @var \Techworker\PascalCoin\Type\Block[] $blocks */
+        $blocks = $client->blocks()->paged($start, $end);
+        $additional = [];
+        foreach($blocks as $block) {
+            /** @var Block $dbBlock */
+            $dbBlock = Block::whereBlock($block->getBlock())->first();
+
+            $additional[$block->getBlock()] = [
+                'volume' => new PascalCoinCurrency($dbBlock->volume, PascalCoinCurrency::MOLINA)
+            ];
+        }
 
         return view('explorer.blocks', [
             'blocks' => $blocks,
+            'additional' => $additional,
             'next' => $next,
             'prev' => $prev,
-            'page' => $page
+            'page' => $page,
+            'start' => $start,
+            'end' => $end
         ]);
     }
 
-    public function blockDetail(int $block, PascalCoinRpcClient $client)
+    public function blockDetail(int $block, PascalCoin $client)
     {
-        $count = $client->getBlockCount();
+        $count = \App\Block::count();
         if($block > $count - 1) {
             abort(404, 'Unknown block');
         }
 
-        $block = $client->getBlock(new BlockNumber($block));
+        $block = $client->blocks()->at($block);
         return view('explorer.block', [
             'block' => $block
         ]);
     }
+
 }

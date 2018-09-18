@@ -6,7 +6,9 @@ use App\Block;
 use App\RPC;
 use App\Services\StatsService;
 use Illuminate\Console\Command;
+use Techworker\PascalCoin\PascalCoin;
 use Techworker\PascalCoin\PascalCoinRpcClient;
+use Techworker\PascalCoin\Type\Account;
 use Techworker\PascalCoin\Type\Simple\BlockNumber;
 
 class Sync extends Command
@@ -30,34 +32,22 @@ class Sync extends Command
      *
      * @return mixed
      */
-    public function handle(StatsService $statsService, PascalCoinRpcClient $rpc)
+    public function handle(StatsService $statsService, PascalCoin $pascalCoin)
     {
         //\DB::table('blocks')->truncate();
         $latest = Block::orderBy('block', 'DESC')->first();
-        $runningBlock = $rpc->getBlockCount();
+        $runningBlock = $pascalCoin->blocks()->count();
         $numOps = 0;
-        $start = $latest !== null ? $latest->block : 0;
+        $start = $latest !== null ? $latest->block - 5 : 0; // go 2 blocks back in history to check orphanced blocks
         for ($blockNo = $start; $blockNo < $runningBlock; $blockNo++) {
-            if($blockNo % 100 === 0) {
+            if($blockNo % 100 === 0 && $blockNo > 0) {
                 echo $blockNo . " (" . $numOps . ")\n";
             }
-            /*
-            if($blockNo % 1000 === 0) {
-                echo 'sleeping 20 seconds';
-                sleep(20);
-            }*/
-            $numOps += $statsService->addNewBlock(new BlockNumber($blockNo));
+            $numOps += $statsService->syncBlock(new BlockNumber($blockNo));
             if($numOps > 20000 || $blockNo % 2000 === 0) {
-                echo $blockNo . " (" . $numOps . ")\n";
-                echo 'sleeping';
                 sleep(10);
                 $numOps = 0;
             }
         }
-
-        /*
-        $block = 0;
-        do {
-        } while();*/
     }
 }

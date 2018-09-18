@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Account;
 use App\Block;
 use Spatie\ResponseCache\Facades\ResponseCache;
+use Techworker\PascalCoin\PascalCoin;
 use Techworker\PascalCoin\PascalCoinRpcClient;
+use Techworker\PascalCoin\Type\Operation;
 use Techworker\PascalCoin\Type\Simple\BlockNumber;
 
 class StatsService
@@ -16,39 +19,40 @@ class StatsService
     protected $blockModel;
 
     /**
-     * @var PascalCoinRpcClient
+     * @var Account
      */
-    protected $rpc;
+    protected $accountModel;
 
-    public function __construct(PascalCoinRpcClient $rpc, Block $blockModel)
+    /**
+     * @var PascalCoin
+     */
+    protected $pascal;
+
+    public function __construct(PascalCoin $pascal, Block $blockModel, Account $accountModel)
     {
-        $this->rpc = $rpc;
+        $this->pascal = $pascal;
         $this->blockModel = $blockModel;
+        $this->accountModel = $accountModel;
     }
 
-    public function addNewBlock(BlockNumber $blockNo)
+    public function syncBlock(BlockNumber $blockNo)
     {
-        /** @var Block $dbBlock */
-        $dbBlock = Block::whereBlock($blockNo->getValue())->first();
-        if($dbBlock !== null) {
-            return;
-        }
-
         /** @var Block $dbPreviousBlock */
         $dbPreviousBlock = Block::whereBlock($blockNo->getValue() - 1)->first();
 
-        $remoteBlock = $this->rpc->getBlock($blockNo);
+        $remoteBlock = $this->pascal->blocks()->at($blockNo);
         if($remoteBlock === null) {
             return;
         }
 
-        $allOps = $this->rpc->getAllBlockOperations($blockNo, 100);
+        /** @var Operation[] $allOps */
+        $allOps = $this->pascal->blocks()->allOperations($blockNo);
 
         $blockData = [
-            'block' => $remoteBlock->getBlock()->getValue(),
+            'block' => $remoteBlock->getBlock(),
             'enc_pubkey' => $remoteBlock->getEncPubKey()->getValue(),
-            'reward' => $remoteBlock->getReward()->getMolinas(),
-            'fee' => $remoteBlock->getFee()->getMolinas(),
+            'reward' => $remoteBlock->getReward()->format(\Techworker\CryptoCurrency\Currencies\PascalCoin::MOLINA),
+            'fee' => $remoteBlock->getFee()->format(\Techworker\CryptoCurrency\Currencies\PascalCoin::MOLINA),
             'ver' => $remoteBlock->getVer(),
             'tstamp' => $remoteBlock->getTimestamp(),
             'hashrate' => $remoteBlock->getHashRateKhs(),
@@ -77,7 +81,7 @@ class StatsService
             $blockData['n_type_'. $op->getOpType()]++;
             foreach($op->getReceivers() as $idx => $receiver) {
                 // exclude fee
-                $volume += (int)$receiver->getAmount()->getMolinas();
+                $volume += (int)$receiver->getAmount()->format(\Techworker\CryptoCurrency\Currencies\PascalCoin::MOLINA);
                 $receiverAccounts[] = $receiver->getAccount()->getAccount();
             }
             foreach($op->getSenders() as $idx => $sender) {
@@ -99,8 +103,10 @@ class StatsService
         $blockData['n_operations_single'] = count($allOps); // TODO
         $blockData['n_operations_multi'] = count($allOps); // TODO
         $blockData['volume'] = $volume;
-        $block = new Block($blockData);
-        $block->save();
+
+        /** @var Block $dbBlock */
+        $dbBlock = Block::firstOrNew(['block' => $blockNo->getValue()], $blockData);
+        $dbBlock->save();
 
         ResponseCache::clear();
         $routeCollection = \Route::getRoutes();
@@ -111,7 +117,7 @@ class StatsService
 
             if(substr($value->getName(), 0, 4) === 'api_') {
                 try {
-                    file-get_contents(route($value->getName()));
+                    file_get_contents(route($value->getName()));
                 } catch (\Exception $ex) {
 
                 }
@@ -121,4 +127,22 @@ class StatsService
         return count($allOps);
     }
 
+    public function syncAccount(\Techworker\PascalCoin\Type\Account $account)
+    {
+        $dbAccount = Account::firstOrNew([
+            'account' => $account->getAccount()
+        ], [
+            'balance' => $account->getBalance()->format(\Techworker\CryptoCurrency\Currencies\PascalCoin::MOLINA),
+            'nops' => $account->getNOperation(),
+            'data' => $account->getRaw(),
+            'type' => $account->getType(),
+            'name' => $account->getName(),
+            'pk' => $account->getEncPubKey()->getValue()
+        ]);
+        $dbAccount->save();
+    }
+
+    public function truncateAccounts() {
+        Account::truncate();
+    }
 }

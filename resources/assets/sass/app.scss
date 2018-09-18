@@ -185,6 +185,9 @@ table.table.dataTable-table, table.table {
       color: white;
       font-family: 'Poppins', sans-serif;
       text-transform: uppercase;
+      a {
+        color: white;
+      }
     }
   }
   tbody {
@@ -192,6 +195,10 @@ table.table.dataTable-table, table.table {
       white-space: nowrap !important;
     }
   }
+
+}
+.dataTable-pagination a:hover {
+  color: inherit;
 }
 
 .info {
