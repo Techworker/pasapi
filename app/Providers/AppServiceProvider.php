@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(PascalCoin::class, function() {
             $rpcClient = new Curl();
-            $rawApiClient = new RawApi($rpcClient, new EndPoint('10.0.2.2'));
+            $rawApiClient = new RawApi($rpcClient, new EndPoint(env('PASC_NODE', '127.0.0.1')));
             return new PascalCoin(
                 $rawApiClient,
                 new RichApi\NodeApi($rawApiClient),
