@@ -109,6 +109,7 @@ class StatsService
         $dbBlock->save();
 
         ResponseCache::clear();
+        /*
         $routeCollection = \Route::getRoutes();
         foreach ($routeCollection as $value) {
             if(!$value->getName()) {
@@ -122,7 +123,7 @@ class StatsService
 
                 }
             }
-        }
+        }*/
 
         return count($allOps);
     }
