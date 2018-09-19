@@ -1,0 +1,1 @@
+<a href="{{route('explorer_block_detail', ['block' => $block])}}">{{$block}}</a>

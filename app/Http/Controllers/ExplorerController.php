@@ -56,16 +56,23 @@ class ExplorerController extends Controller
         ]);
     }
 
-    public function blockDetail(int $block, PascalCoin $client)
+    public function blockDetail(Request $request, int $block, PascalCoin $client)
     {
         $count = \App\Block::count();
         if($block > $count - 1) {
             abort(404, 'Unknown block');
         }
 
+        $dbBlock = \App\Block::whereBlock($block)->first();
         $block = $client->blocks()->at($block);
+
+        $page = $request->get('page', 1);
+        $size = 10;
+        $operations = $client->operations()->inBlock($block, $page * $size - $size, $size);
         return view('explorer.block', [
-            'block' => $block
+            'block' => $block,
+            'dbBlock' => $dbBlock,
+            'operations' => $operations
         ]);
     }
 

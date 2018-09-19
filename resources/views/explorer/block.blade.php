@@ -35,7 +35,7 @@
                         </div>
                         <div class="value">
                             <label class="value-label">Volume:</label>
-                            <div class="value-value">TODO</div>
+                            <div class="value-value">{{$dbBlock->volume}}</div>
                         </div>
                         <div class="value">
                             <label class="value-label">Accounts:</label>
@@ -120,4 +120,46 @@
                 </div>
             </div>
         </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt--2">
+                <div class="card-header">
+                    Operations
+                </div>
+                <div class="p-2 info">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <th>#</th>
+                                    <th>Text</th>
+                                    <th>Operation Type</th>
+                                    <th>Account</th>
+                                    <th>Volume</th>
+                                    <th>Fee</th>
+                                    </thead>
+                                    <tbody>
+                                    <?php /** @var $operation \Techworker\PascalCoin\Type\Operation */ ?>
+                                    @foreach($operations as $operation)
+                                        <tr>
+                                            <td><a href="#">{{$operation->getOpBlock()}}/{{$operation->getBlock()->getValue()}}</a></td>
+                                            <td>{{$operation->getOpTxt()}}</td>
+                                            <td>@include('macros.op_type', ['opType' => $operation->getOpType()]) (type {{$operation->getOpType()}})</td>
+                                            <td>@include('macros.account_number', ['account' => $operation->getAccount()])</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

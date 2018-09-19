@@ -32,7 +32,7 @@
                 <?php /** @var $block \Techworker\PascalCoin\Type\Block */ ?>
                 @foreach($blocks as $block)
                 <tr>
-                    <td><a href="{{route('explorer_block_detail', ['block' => $block->getBlock()])}}">{{$block->getBlock()}}</a></td>
+                    <td>@include('macros.block_number', ['block' => $block->getBlock()])</td>
                     <td>{{\Carbon\Carbon::createFromTimestampUTC($block->getTimestamp())->toAtomString()}}</td>
                     <td>{{$block->getNumberOfOperations()}}</td>
                     <td>{{$block->getPayload()}}</td>

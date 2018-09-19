@@ -48,7 +48,8 @@ class AppServiceProvider extends ServiceProvider
                 new RichApi\NodeApi($rawApiClient),
                 new RichApi\WalletApi($rawApiClient),
                 new RichApi\AccountApi($rawApiClient),
-                new RichApi\BlockApi($rawApiClient)
+                new RichApi\BlockApi($rawApiClient),
+                new RichApi\OperationsApi($rawApiClient)
             );
         });
 
