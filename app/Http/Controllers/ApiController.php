@@ -311,6 +311,16 @@ class ApiController extends Controller
             )
         );
     }
+    public function timelineHourly() {
+        return response()->json(
+            $this->getRawStats(
+                [['tstamp', '>=', time() - (24*60*60*7)]],
+                ['expr' => "FROM_UNIXTIME(tstamp, '%Y-%m-%d %H:00:00')", 'alias' => 'hour'],
+                true,
+                ['field' => 'hour', 'order' => 'ASC']
+            )
+        );
+    }
     public function timelineWeekly() {
         return response()->json(
             $this->getRawStats(

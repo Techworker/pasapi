@@ -47,6 +47,13 @@ const charts = {
         type: 'daily',
         typeField: 'day'
     },
+    'optypes-hourly': {
+        url: '/api/timeline/hourly',
+        data: {},
+        inited: false,
+        type: 'hourly',
+        typeField: 'hour'
+    },
 };
 
 

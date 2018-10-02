@@ -21,6 +21,7 @@ Route::get('/', 'ApiController@index')->name('api_index');
 Route::get('/blocks/latest', 'ApiController@blocksLatest')->name('api_blocks_latest');
 Route::get('/blocks/{blockNumber}', 'ApiController@blocksDetail')->name('api_blocks_detail');
 
+Route::get('/timeline/hourly', 'ApiController@timelineHourly')->name('api_timeline_hourly');
 Route::get('/timeline/daily', 'ApiController@timelineDaily')->name('api_timeline_daily');
 Route::get('/timeline/weekly', 'ApiController@timelineWeekly')->name('api_timeline_weekly');
 Route::get('/timeline/monthly', 'ApiController@timelineMonthly')->name('api_timeline_monthly');

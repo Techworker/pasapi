@@ -14,6 +14,7 @@
             <a class="nav-link" href="#" data-href="optypes-monthly">Monthly</a>
             <a class="nav-link" href="#" data-href="optypes-weekly">Weekly</a>
             <a class="nav-link" href="#" data-href="optypes-daily">Daily</a>
+            <a class="nav-link" href="#" data-href="optypes-hourly">Hourly</a>
         </nav>
         <div class="row justify-content-center" id="chart-container">
             <div class="col-md-12">
@@ -68,12 +69,27 @@
                         <canvas id="daily"></canvas>
                         @include('loading')
                         <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <th>Day</th>
-                            <th>Blocktime in seconds (Avg)</th>
-                            </thead>
-                        </table>
+                            <table class="table table-striped">
+                                <thead>
+                                <th>Day</th>
+                                <th>Blocktime in seconds (Avg)</th>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt--2" id="optypes-hourly">
+                    <div class="card-header">Hourly blocktime (last 7 days)</div>
+                    <div class="chart">
+                        <canvas id="daily"></canvas>
+                        @include('loading')
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <th>Hour</th>
+                                <th>Blocktime in seconds (Avg)</th>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
